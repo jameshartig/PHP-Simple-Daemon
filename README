@@ -1,0 +1,17 @@
+﻿fastest963 / PHP-Simple-Daemon
+
+The daemon.php file contains all the code necessary to running the PHP Daemon.  A daemon is a background-running process that accepts connects and acts on them. With every new connection to this daemon, a new process will be created or forked.
+
+Requirements:
+PHP 5.x
+Pcntl
+Posix
+
+After downloading the file, put it in a writable directory (777), create a writable PIDs directory and open the daemon.php file. Take a look at the various configuration options at the beginning, edit them as necessary. Then give the daemon permissions to execute and run. The default server log is “server.log” take a look at that for any errors.
+
+The following commands can be run from within a client to manage the server:
+Shutdown (shutdown all clients and server)
+Restart (shutdown all clients and server, then start) 
+End (end client connection)
+Quit (same as end)
+Login (login with user and password)
