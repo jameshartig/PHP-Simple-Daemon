@@ -7,9 +7,10 @@ declare(ticks = 1);
 // TRAILING SLASHES REQUIRED
 $conf['masterdir'] = "/home/james/PHP-Simple-Daemon/"; //the folder in which this file exists
 $conf['piddir'] = "/home/james/PHP-Simple-Daemon/"; //a folder that contains PIDs (must be 777)
-$conf['logfile'] = "/home/james/PHP-Simple-Daemon/server.log"; //blank for no logging
-$conf['uid'] = 99; //the UID of the daemon to run (blank for no change)
-$conf['gid'] = 99; //group ID of the daemon to run (blank for no change)
+$conf['logfile'] = $conf['masterdir']."server.log"; //blank ("") for no logging
+// you need super-user or root privleges to change the uid and gid
+$conf['uid'] = ""; //the UID of the daemon to run (blank for no change)
+$conf['gid'] = ""; //group ID of the daemon to run (blank for no change)
 $conf['IP'] = "0.0.0.0"; // IP for the daemon to run on
 $conf['port'] = 16644; //port to run daemon on
 $conf['timeout'] = 5; //seconds to wait with NO activity until client is closed
@@ -30,14 +31,16 @@ $__mpid = daemonme(); //store the master pid
 if (!empty($conf['gid'])){
 if( !posix_setgid($conf['gid']) ){ 
   file_put_contents($conf['logfile'], "[".posix_getpid()."] Unable to setgid!\n", FILE_APPEND); 
-  exit; 
+  echo "[".posix_getpid()."] Unable to setgid!\n";
+  exit(0); 
 }
 }
 //set the uid
 if (!empty($conf['uid'])){
 if( !posix_setuid($conf['uid']) ){ 
   file_put_contents($conf['logfile'], "[".posix_getpid()."] Unable to setuid!\n", FILE_APPEND); 
-  exit; 
+  echo "[".posix_getpid()."] Unable to setuid!\n";
+  exit(0); 
 }
 }
 
@@ -332,14 +335,14 @@ function cont($sock){
 							}
 						}
 						if ($pas===true){
-							if (isset($conf['login'][$usr]) && $buf==$conf['login'][$user]){
+							if (isset($conf['login'][$usr]) && $buf==$conf['login'][$usr]){
+								$msg = "\n**************\nWelcome $usr!\n**************\n";
+								socket_write($sock, $msg, strlen($msg));
 								//we are done with login so make all false
 									$usr = false;
 									$pas = false;
 									$logn = false;
-								$msg = "\n**************\nWelcome $usr!\n**************\n";
-								$admn = true;
-								socket_write($sock, $msg, strlen($msg));
+								$admn = true;								
 								break;
 							}
 							//we are done with login so make all false
