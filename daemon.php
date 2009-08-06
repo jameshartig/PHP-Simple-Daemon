@@ -4,6 +4,7 @@ error_reporting(E_ALL); //report all errors
 set_time_limit(0); //run forever
 declare(ticks = 1); 
 
+/* You may edit any values below this line */
 // TRAILING SLASHES REQUIRED
 $conf['masterdir'] = "/home/james/PHP-Simple-Daemon/"; //the folder in which this file exists
 $conf['piddir'] = "/home/james/PHP-Simple-Daemon/"; //a folder that contains PIDs (must be 777)
@@ -19,11 +20,12 @@ $conf['login'] = array('user' => 'pass', 'user2' => 'pass2');
 
 // here is your function:
 // it is called whenever someone enters text
-function userfunc($sent){
+function userfunc($sent){ //keep the function name the same!
 		$msg = "You said '$sent'.\n";
 		socket_write($sock, $msg, strlen($msg));
 }
 
+/* You should really be careful editting anything below this line! :P */
 
 $__mpid = daemonme(); //store the master pid
 
